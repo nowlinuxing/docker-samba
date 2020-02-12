@@ -1,0 +1,6 @@
+# Setting up Samba as a Standalone Server - SambaWiki
+# https://wiki.samba.org/index.php/Setting_up_Samba_as_a_Standalone_Server
+
+[global]
+	log file = /var/log/samba/%m
+	log level = 1
