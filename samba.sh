@@ -26,4 +26,4 @@ $SMB_PASSWORD
 $SMB_PASSWORD
 PASSWORD
 
-/usr/sbin/smbd -F -S --no-process-group
+exec /usr/sbin/smbd -F -S --no-process-group
