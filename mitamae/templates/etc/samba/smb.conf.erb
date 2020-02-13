@@ -4,3 +4,10 @@
 [global]
 	log file = /var/log/samba/%m
 	log level = 1
+
+[share]
+	path = /mount
+	browsable = yes
+	read only = no
+	guest ok = no
+	valid users = <%= @user %>

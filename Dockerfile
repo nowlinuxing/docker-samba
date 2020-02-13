@@ -7,7 +7,10 @@ RUN apt update \
 RUN mkdir /mount \
     && cp /etc/samba/smb.conf /etc/samba/smb.conf.orig
 
-COPY samba.sh smb.conf.base /root/
+ADD https://github.com/itamae-kitchen/mitamae/releases/latest/download/mitamae-x86_64-linux /root/mitamae
+RUN chmod +x /root/mitamae
+
+COPY samba.sh mitamae /root/
 
 EXPOSE 139 445
 
