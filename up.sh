@@ -12,7 +12,7 @@ share_dir=$4
 
 echo -n "Enter a password: "
 stty -echo
-read smb_password
+read -r smb_password
 stty echo
 echo
 
@@ -21,11 +21,12 @@ echo "uid: $uid"
 echo "gid: $gid"
 echo "share_dir: $share_dir"
 
+smb_password_json=$(echo "$smb_password" | sed -e 's|\\|\\\\|g' -e 's|"|\\"|g')
 smb_param=$(cat <<PARAM
 {
   "user": {
     "name": "$user",
-    "password": "$smb_password",
+    "password": "$smb_password_json",
     "uid": $uid,
     "gid": $gid
   }
