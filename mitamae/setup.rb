@@ -1,24 +1,26 @@
+param = JSON.parse(ENV["SMB_PARAM"])
+user = param["user"]
+
 template "/etc/samba/smb.conf" do
-  action :create
-  variables(user: ENV["SMB_USER"])
+  variables(user: user["name"])
 end
 
 # Create a user and a samba user
-group ENV["SMB_USER"] do
-  gid ENV["SMB_USER_GID"].to_i
+group user["name"] do
+  gid user["gid"]
 end
 
-user ENV["SMB_USER"] do
-  uid ENV["SMB_USER_UID"].to_i
-  gid ENV["SMB_USER_GID"].to_i
-  password ENV["SMB_PASSWORD"]
+user user["name"] do
+  uid user["uid"]
+  gid user["gid"]
+  password user["password"]
 end
 
 execute "Add a samba user" do
   command <<-COMMAND.gsub(/^ */, "")
-    cat <<PASSWORD | smbpasswd -a -s #{ENV["SMB_USER"]}
-    #{ENV["SMB_PASSWORD"]}
-    #{ENV["SMB_PASSWORD"]}
+    cat <<PASSWORD | smbpasswd -a -s #{user["name"]}
+    #{user["password"]}
+    #{user["password"]}
     PASSWORD
   COMMAND
 end

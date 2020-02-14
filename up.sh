@@ -5,9 +5,9 @@ if [ $# -lt 4 ]; then
   exit 1
 fi
 
-smb_user=$1
-smb_user_uid=$2
-smb_user_gid=$3
+user=$1
+uid=$2
+gid=$3
 share_dir=$4
 
 echo -n "Enter a password: "
@@ -16,18 +16,27 @@ read smb_password
 stty echo
 echo
 
-echo "smb_user: $smb_user"
-echo "smb_user_uid: $smb_user_uid"
-echo "smb_user_gid: $smb_user_gid"
+echo "user: $user"
+echo "uid: $uid"
+echo "gid: $gid"
 echo "share_dir: $share_dir"
+
+smb_param=$(cat <<PARAM
+{
+  "user": {
+    "name": "$user",
+    "password": "$smb_password",
+    "uid": $uid,
+    "gid": $gid
+  }
+}
+PARAM
+)
 
 sudo docker run \
   --rm \
   -p 139:139 \
   -p 445:445 \
   -v $share_dir:/mount \
-  -e SMB_USER=$smb_user \
-  -e SMB_USER_UID=$smb_user_uid \
-  -e SMB_USER_GID=$smb_user_gid \
-  -e "SMB_PASSWORD=$smb_password" \
+  -e SMB_PARAM="$smb_param" \
   samba
