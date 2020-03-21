@@ -18,7 +18,7 @@ end
 
 execute "Add a samba user" do
   command <<-COMMAND.gsub(/^ */, "")
-    cat <<PASSWORD | smbpasswd -a -s #{user["name"]}
+    cat <<'PASSWORD' | smbpasswd -a -s #{user["name"]}
     #{user["password"]}
     #{user["password"]}
     PASSWORD

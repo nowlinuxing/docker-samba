@@ -13,6 +13,23 @@ $ sudo docker build -t samba .
 ```sh
 $ ./up.sh username uid gid /path/to/share/dir
 ```
+If you want to pass the same parameters every time, you can also specify a JSON file containing the settings.
+
+```sh
+$ cat param.json
+{
+  "user": {
+    "name": "user",
+    "uid": 1000,
+    "gid": 1000
+  },
+  "share": {
+    "path": "/path/to/dir"
+  }
+}
+
+$ ./up.sh param.json
+```
 
 ## Debugging samba
 
