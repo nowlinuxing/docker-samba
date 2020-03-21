@@ -1,0 +1,10 @@
+{
+  "user": {
+    "name": "user",
+    "uid": 1000,
+    "gid": 1000
+  },
+  "share": {
+    "path": "/path/to/dir"
+  }
+}
