@@ -23,8 +23,13 @@ $ cat param.json
     "uid": 1000,
     "gid": 1000
   },
-  "share": {
-    "path": "/path/to/dir"
+  "sections": {
+    "share1": {
+      "path": "/path/to/dir1"
+    },
+    "share2": {
+      "path": "/path/to/dir2"
+    }
   }
 }
 
