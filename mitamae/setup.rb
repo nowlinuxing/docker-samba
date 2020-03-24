@@ -2,7 +2,7 @@ param = JSON.parse(ENV["SMB_PARAM"])
 user = param["user"]
 
 template "/etc/samba/smb.conf" do
-  variables(user: user["name"])
+  variables(param: param)
 end
 
 # Create a user and a samba user

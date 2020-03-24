@@ -8,13 +8,23 @@ read_password()
   stty echo
 }
 
+make_volume_opts()
+{
+  # The echo command is built in /bin/sh evaluates backslash, and escape or recognizes as a sequence it.
+  # To avoid this, use here document instead.
+  (jq -r '.sections | to_entries | map(.value.path + ":/mount/" + .key) | .[]' <<JSON
+$1
+JSON
+  ) | while read volume; do
+    echo "-v $volume"
+  done
+}
+
 case $# in
   1)
     smb_param=$(cat $1)
     read_password
     smb_param=$(echo "$smb_param" | jq --arg password "$smb_password" '.user.password = $password')
-
-    share_dir=$(echo $smb_param | jq .share.path)
     ;;
   4)
     user=$1
@@ -30,6 +40,11 @@ case $# in
     "name": "$user",
     "uid": $uid,
     "gid": $gid
+  },
+  "sections": {
+    "share": {
+      "path": "$share_dir"
+    }
   }
 }
 PARAM
@@ -42,10 +57,12 @@ PARAM
     ;;
 esac
 
+volume_opt=$(make_volume_opts "$smb_param")
+
 sudo docker run \
   --rm \
   -p 139:139 \
   -p 445:445 \
-  -v $share_dir:/mount \
+  $volume_opt \
   -e SMB_PARAM="$smb_param" \
   samba

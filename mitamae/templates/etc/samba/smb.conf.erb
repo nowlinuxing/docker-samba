@@ -5,9 +5,11 @@
 	log file = /var/log/samba/%m
 	log level = 1
 
-[share]
-	path = /mount
+<% @param["sections"].each.with_index do |(name, params), i| %>
+[<%= name %>]
+	path = <%= "/mount/#{name}" %>
 	browsable = yes
 	read only = no
 	guest ok = no
-	valid users = <%= @user %>
+	valid users = <%= @param["user"]["name"] %>
+<% end %>
