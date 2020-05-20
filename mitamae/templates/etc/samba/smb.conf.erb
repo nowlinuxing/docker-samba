@@ -5,11 +5,18 @@
 	log file = /var/log/samba/%m
 	log level = 1
 
-<% @param["sections"].each.with_index do |(name, params), i| %>
-[<%= name %>]
-	path = <%= "/mount/#{name}" %>
-	browsable = yes
-	read only = no
-	guest ok = no
-	valid users = <%= @param["user"]["name"] %>
+<% @param["sections"].each do |section_name, section_params| -%>
+[<%= section_name %>]
+  <%
+     params = {
+       "path":        "/mount/#{section_name}",
+       "browsable":   "yes",
+       "read only":   "no",
+       "guest ok":    "no",
+       "valid users": @param["user"]["name"]
+     }.merge(section_params[:params])
+  %>
+  <%- params.each do |name, value| %>
+    <%= name %> = <%= value -%>
+  <% end %>
 <% end %>
