@@ -61,6 +61,7 @@ volume_opt=$(make_volume_opts "$smb_param")
 
 sudo docker run \
   --rm \
+  --init \
   -p 139:139 \
   -p 445:445 \
   $volume_opt \
