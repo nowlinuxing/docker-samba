@@ -28,7 +28,10 @@ $ cat param.json
       "path": "/path/to/dir1"
     },
     "share2": {
-      "path": "/path/to/dir2"
+      "path": "/path/to/dir2",
+      "params": {
+        "hosts allow": "127.0.0.1"
+      }
     }
   }
 }
