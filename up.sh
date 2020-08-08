@@ -27,8 +27,12 @@ case $# in
     smb_param=$(cat $1)
     i=0
     for user in $(echo "$smb_param" | jq -r '.users[] | .name'); do
-      read_password "$user"
-      smb_param=$(echo "$smb_param" | jq --arg password "$smb_password" ".users[$i].password = \$password")
+      echo "$smb_param" | jq -e ".users[$i].password" >/dev/null
+      if [ $? -ne 0 ]; then
+        read_password "$user"
+        smb_param=$(echo "$smb_param" | jq --arg password "$smb_password" ".users[$i].password = \$password")
+      fi
+
       i=$(expr $i + 1)
     done
     ;;
