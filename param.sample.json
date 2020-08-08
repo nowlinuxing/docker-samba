@@ -1,9 +1,16 @@
 {
-  "user": {
-    "name": "user",
-    "uid": 1000,
-    "gid": 1000
-  },
+  "users": [
+    {
+      "name": "user1",
+      "uid": 1000,
+      "gid": 1000
+    },
+    {
+      "name": "user2",
+      "uid": 1001,
+      "gid": 1001
+    }
+  ],
   "sections": {
     "share1": {
       "path": "/path/to/dir1"

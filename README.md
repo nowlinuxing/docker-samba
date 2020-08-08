@@ -18,11 +18,18 @@ If you want to pass the same parameters every time, you can also specify a JSON 
 ```sh
 $ cat param.json
 {
-  "user": {
-    "name": "user",
-    "uid": 1000,
-    "gid": 1000
-  },
+  "users": [
+    {
+      "name": "user1",
+      "uid": 1000,
+      "gid": 1000
+    },
+    {
+      "name": "user2",
+      "uid": 1001,
+      "gid": 1001
+    }
+  ],
   "sections": {
     "share1": {
       "path": "/path/to/dir1"
@@ -30,7 +37,8 @@ $ cat param.json
     "share2": {
       "path": "/path/to/dir2",
       "params": {
-        "hosts allow": "127.0.0.1"
+        "hosts allow": "127.0.0.1",
+        "valid users": "user1 user2"
       }
     }
   }

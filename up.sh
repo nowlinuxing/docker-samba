@@ -2,10 +2,12 @@
 
 read_password()
 {
-  echo -n "Enter a password: "
+  user=$1
+  echo -n "Enter a password for a user \"${user}\": "
   stty -echo
   read -r smb_password
   stty echo
+  echo
 }
 
 make_volume_opts()
@@ -23,8 +25,16 @@ JSON
 case $# in
   1)
     smb_param=$(cat $1)
-    read_password
-    smb_param=$(echo "$smb_param" | jq --arg password "$smb_password" '.user.password = $password')
+    i=0
+    for user in $(echo "$smb_param" | jq -r '.users[] | .name'); do
+      echo "$smb_param" | jq -e ".users[$i].password" >/dev/null
+      if [ $? -ne 0 ]; then
+        read_password "$user"
+        smb_param=$(echo "$smb_param" | jq --arg password "$smb_password" ".users[$i].password = \$password")
+      fi
+
+      i=$(expr $i + 1)
+    done
     ;;
   4)
     user=$1
@@ -34,13 +44,15 @@ case $# in
 
     read_password
 
-    smb_param=$(cat <<PARAM | jq --arg password "$smb_password" '.user.password = $password'
+    smb_param=$(cat <<PARAM | jq --arg password "$smb_password" '.users[0].password = $password'
 {
-  "user": {
-    "name": "$user",
-    "uid": $uid,
-    "gid": $gid
-  },
+  "users": [
+    {
+      "name": "$user",
+      "uid": $uid,
+      "gid": $gid
+    }
+  ],
   "sections": {
     "share": {
       "path": "$share_dir"

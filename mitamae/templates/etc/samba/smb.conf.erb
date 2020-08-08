@@ -9,12 +9,12 @@
 [<%= section_name %>]
   <%
      params = {
-       "path":        "/mount/#{section_name}",
-       "browsable":   "yes",
-       "read only":   "no",
-       "guest ok":    "no",
-       "valid users": @param["user"]["name"]
-     }.merge(section_params[:params])
+       "path"        => "/mount/#{section_name}",
+       "browsable"   => "yes",
+       "read only"   => "no",
+       "guest ok"    => "no",
+       "valid users" => @param["users"].map { |user| user["name"] }.join(", ")
+     }.merge(section_params[:params] || {})
   %>
   <%- params.each do |name, value| %>
     <%= name %> = <%= value -%>
