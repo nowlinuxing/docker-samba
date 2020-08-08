@@ -2,8 +2,15 @@
 # https://wiki.samba.org/index.php/Setting_up_Samba_as_a_Standalone_Server
 
 [global]
-	log file = /var/log/samba/%m
-	log level = 1
+  <%-
+     params = {
+       "log file" => "/dev/stdout",
+       "log level" => 1,
+     }.merge(@param["global"] || {})
+
+     params.each do |name, value| -%>
+    <%= name %> = <%= value %>
+  <%- end -%>
 
 <% @param["sections"].each do |section_name, section_params| -%>
 [<%= section_name %>]
