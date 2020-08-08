@@ -12,9 +12,9 @@
     <%= name %> = <%= value %>
   <%- end -%>
 
-<% @param["sections"].each do |section_name, section_params| -%>
+<% @param["sections"].each do |section_name, section_params| %>
 [<%= section_name %>]
-  <%
+  <%-
      params = {
        "path"        => "/mount/#{section_name}",
        "browsable"   => "yes",
@@ -22,8 +22,8 @@
        "guest ok"    => "no",
        "valid users" => @param["users"].map { |user| user["name"] }.join(", ")
      }.merge(section_params[:params] || {})
-  %>
-  <%- params.each do |name, value| %>
-    <%= name %> = <%= value -%>
-  <% end %>
-<% end %>
+
+     params.each do |name, value| -%>
+    <%= name %> = <%= value %>
+  <%- end -%>
+<% end  %>
